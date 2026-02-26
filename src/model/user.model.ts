@@ -6,6 +6,10 @@ export interface signup{
   password: string;
   phone: string;
   otp:string;
+    bio: string;
+  gender: string;
+  address: string;
+  dateOfBirth: Date;
 }
 
 const signupSchema: Schema = new Schema<signup>(
@@ -28,7 +32,18 @@ const signupSchema: Schema = new Schema<signup>(
     otp:{
         type: String,
     },
-    
+      bio: {
+      type: String,
+    },
+    gender: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    dateOfBirth: {
+      type: Date,
+    },
   },
 );
 

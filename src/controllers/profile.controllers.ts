@@ -1,31 +1,63 @@
 import { Request, Response } from "express";
-import Profile from "../model/profile.model";
+import signup from "../model/user.model";
 
-export const createProfile = async (req: Request, res: Response) => {
+
+// CREATE OR UPDATE PROFILE//////////////////////////////////////////////////////////////////////////
+export const UpdateProfile = async (req: Request, res: Response) => {
   try {
-    const { userId, bio, gender, address,} = req.body;
+    const { userId, bio, gender, address, dateOfBirth } = req.body;
 
-    const existingProfile = await Profile.findOne({ userId });
-    if (existingProfile) {
-      return res.status(400).json({
-        message: "Profile already exists",
+console.log("req.body: ", req.body);
+
+    let profile = await signup.findById( userId );
+
+console.log("profile :",profile);
+
+    if (profile) {
+      profile.bio = bio;
+      profile.gender = gender;
+      profile.address = address;
+      profile.dateOfBirth = dateOfBirth;
+
+      await profile.save();
+      return res.status(200).json({
+        success: true,
+        message: "Profile updated successfully",
+        profile,
+      });
+    }  
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error,
+    });
+  }
+};
+
+// GET PROFILE
+export const getProfile = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const profile = await signup.findOne({ userId }).populate("userId");
+
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        message: "Profile not found",
       });
     }
 
-    const profile = await Profile.create({
-      userId,
-      bio,
-      gender,
-      address,
-    });
-
-    res.status(201).json({
-      message: "Profile created successfully",
+    res.status(200).json({
+      success: true,
       profile,
     });
   } catch (error) {
     res.status(500).json({
-      message: "Server Error",
+      success: false,
+      message: "Server error",
       error,
     });
   }
