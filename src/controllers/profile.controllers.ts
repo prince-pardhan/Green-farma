@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import signup from "../model/user.model";
+import cloudinary from "../cloudinary/cloudinary";
 
 
-// CREATE OR UPDATE PROFILE//////////////////////////////////////////////////////////////////////////
+//    CREATE OR UPDATE PROFILE    //////////////////////////////////////////////////////////////////////////
 export const UpdateProfile = async (req: Request, res: Response) => {
   try {
     const { userId, bio, gender, address, dateOfBirth } = req.body;
@@ -62,3 +63,32 @@ export const getProfile = async (req: Request, res: Response) => {
     });
   }
 };
+
+
+export const UpdatePhoto = async(req: Request, res: Response)=>{
+   const { id } = req.params;
+
+  const file = (req as any).file as Express.Multer.File | undefined;
+
+    if (!file) {
+      return res.status(400).json({
+        status: 400,
+        message: "Logo file is required (field: 'logo')",
+      });
+    }
+
+    console.log("file : ",file);
+
+    const result = await cloudinary.uploader.upload(file.path, {
+      folder: "green-farma",
+      resource_type: "image",
+    })
+
+    console.log("Cloudinary URL:", result.secure_url);
+
+    res.status(200).json({
+      message: "Image uploaded successfully",
+      url: result.secure_url,
+    });
+    
+}
