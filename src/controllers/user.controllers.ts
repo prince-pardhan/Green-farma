@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import User from "../model/user.model";
 import bcrypt from "bcrypt";
 import { SendEmailOTP } from "../email/sendEmail";
-
+import cloudinary from "../cloudinary/cloudinary";
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
@@ -122,6 +122,48 @@ export const VerifyOTP = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(500).json({
       message: "Server Error",
+    });
+  }
+};
+
+
+//image updat ///////////////////////////////////////////////////////////////////////////////
+export const UpdatePhoto = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const file = (req as any).file as Express.Multer.File | undefined;
+
+    if (!file) {
+      return res.status(400).json({
+        success: false,
+        message: "Image file is required (field name: avatar)",
+      });
+    }
+
+   
+    const result = await cloudinary.uploader.upload(file.path, {
+      folder: "green-farma",
+      resource_type: "image",
+    });
+
+    const user = new User()
+
+
+    user.avatar = result.secure_url;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Photo uploaded & saved successfully",
+      avatar: result.secure_url,
+      user,
+    });
+
+  }catch(error:any){
+    console.log(error);
+    res.status(500).json({
+      message:error.message 
     });
   }
 };

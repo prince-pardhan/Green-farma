@@ -2,6 +2,7 @@ import express, {} from 'express';
 import routerPost from './routes/routes';
 import routerUser from './routes/user.router';
 import { Database } from './config/database';
+import routerimage from './routes/post.routes';
 
 
 const app = express();
@@ -9,6 +10,7 @@ const app = express();
 app.use(express.json())
 app.use('/post',routerPost );
 app.use('/user',routerUser );
+app.use('/imagr',routerimage );
 const port = process.env.PORT || 9797;
 
 Database()

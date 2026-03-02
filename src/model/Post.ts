@@ -5,7 +5,7 @@ export interface Post  {
     photo: string;
     video: string;
     likes: string;
-    comment: string;
+    comment: string[];
     pincomment:string;
 }
 
@@ -27,7 +27,7 @@ const postSchema: Schema = new Schema<Post>(
             type: String,
         },
         comment: {
-              type: [],
+              type: [String],
             deflate:[],
             ref:"comment"
         },

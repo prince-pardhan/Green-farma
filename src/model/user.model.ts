@@ -1,15 +1,16 @@
 import mongoose, { Schema } from "mongoose";
 
-export interface signup{
+export interface signup {
   username: string;
   email: string;
   password: string;
   phone: string;
-  otp:string;
-    bio: string;
+  otp: string;
+  bio: string;
   gender: string;
   address: string;
   dateOfBirth: Date;
+  avatar: string;
 }
 
 const signupSchema: Schema = new Schema<signup>(
@@ -24,15 +25,15 @@ const signupSchema: Schema = new Schema<signup>(
     },
     password: {
       type: String,
-   
+
     },
-    phone:{
-        type: String,
+    phone: {
+      type: String,
     },
-    otp:{
-        type: String,
+    otp: {
+      type: String,
     },
-      bio: {
+    bio: {
       type: String,
     },
     gender: {
@@ -43,6 +44,9 @@ const signupSchema: Schema = new Schema<signup>(
     },
     dateOfBirth: {
       type: Date,
+    },
+    avatar: {
+      type: String
     },
   },
 );
