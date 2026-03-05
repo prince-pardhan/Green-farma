@@ -1,5 +1,4 @@
 import express, {} from 'express';
-import routerPost from './routes/routes';
 import routerUser from './routes/user.router';
 import { Database } from './config/database';
 import routerimage from './routes/post.routes';
@@ -8,9 +7,8 @@ import routerimage from './routes/post.routes';
 const app = express();
 
 app.use(express.json())
-app.use('/post',routerPost );
 app.use('/user',routerUser );
-app.use('/imagr',routerimage );
+app.use('/image',routerimage );
 const port = process.env.PORT || 9797;
 
 Database()

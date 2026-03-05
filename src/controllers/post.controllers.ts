@@ -5,8 +5,11 @@ import Post from "../model/post.model";
 export const createPost = async (req: Request, res: Response) => {
   try {
     const { title, description, user } = req.body;
+    console.log("itle, description, user :" ,title, description, user);
+    
 
     const newPost = await Post.create({
+      
       title,
       description,
       user,
