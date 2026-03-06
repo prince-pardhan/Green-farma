@@ -23,17 +23,7 @@ const postSchema: Schema = new Schema<Post>(
         video: {
             type: String,
         },
-        likes: {
-            type: String,
-        },
-        comment: {
-              type: [String],
-            deflate:[],
-            ref:"comment"
-        },
-        pincomment: {
-            type: String,
-        },
+
     },
 );
 

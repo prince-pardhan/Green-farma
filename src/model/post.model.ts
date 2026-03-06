@@ -26,6 +26,17 @@ const PostSchema: Schema = new Schema(
       ref: "User",
       required: true,
     },
+            likes: {
+            type: String,
+        },
+        comment: {
+              type: [String],
+            deflate:[],
+            ref:"comment"
+        },
+        pincomment: {
+            type: String,
+        },
   },
   { timestamps: true }
 );

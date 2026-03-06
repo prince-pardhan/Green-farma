@@ -6,10 +6,11 @@ import {
   updatePost,
   deletePost,
 } from "../controllers/post.controllers";
+import upload from "../cloudinary/uploader";
 
 const routerimage = express.Router();
 
-routerimage.post("/create", createPost);
+routerimage.post("/create", upload.single("avtar"), createPost);
 routerimage.get("/", getAllPosts);
 routerimage.get("/:id", getSinglePost);
 routerimage.put("/:id", updatePost);
