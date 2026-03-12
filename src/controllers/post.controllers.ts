@@ -26,7 +26,9 @@ export const createPost = async (req: Request, res: Response) => {
         })
     
         console.log("Cloudinary URL:", result.secure_url);
-        /////////////////////////////////////////////
+    
+
+//////////////////////////////////////////////////////////
 
     const newPost = await Post.create({
       title,
@@ -44,6 +46,69 @@ export const createPost = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server Error", error });
   }
 };
+
+    //////////////////// add comments/////////////////////////
+ export const AddComment = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params;
+    const { userId, text } = req.body;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    post.comments.push({
+      userId,
+      text,
+    });
+
+    await post.save();
+
+    res.json({
+      message: "Comment added",
+      comments: post,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+////////////////////// add like //////////////////////////////
+
+export const AddLike = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params;
+    const { userId } = req.body;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Check if user already liked
+    const alreadyLiked = post.likes.includes(userId);
+
+    if (alreadyLiked) {
+      return res.status(400).json({ message: "You already liked this post" });
+    }
+
+    post.likes.push(userId);
+
+    await post.save();
+
+    res.json({
+      message: "Post liked successfully",
+      likes: post.likes,
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+///////////////////////////////////////////////////////////////////////////
 
 // ✅ GET ALL POSTS
 export const getAllPosts = async (req: Request, res: Response) => {
