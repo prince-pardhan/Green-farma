@@ -70,6 +70,6 @@ export const SendEmailOTP = async (email: string, otp: string) => {
   </table>
 `,
   });
-
+   
   console.log("Message sent:", info.messageId);
 };
