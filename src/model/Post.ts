@@ -5,7 +5,7 @@ export interface Post  {
     photo: string;
     video: string;
     likes: string;
-    comment: string;
+    comment: [string];
     pincomment:string;
 }
 
